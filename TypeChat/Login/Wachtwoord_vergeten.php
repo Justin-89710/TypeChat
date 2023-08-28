@@ -10,11 +10,6 @@ if (!$db) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// check if user is already logged in
-if (isset($_SESSION["username"])) {
-    header("Location: home.php");
-}
-
 if (isset($_POST['submit'])){
     //get email
     $email = $_POST['email'];
@@ -66,30 +61,59 @@ if (isset($_POST['submit'])){
         <link rel="stylesheet" href="../CSS/Login.css">
 
         <!-- Bootstrap CSS -->
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
 <body>
 
-<!-- Main -->
-<form method="post">
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="login-container">
-                <h1>Wachtwoord resetten</h1>
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-                </div>
-                <button type="submit" class="btn btn-block" name="submit">Send mail</button>
-                <p class="text-muted" style="font-size: 15px">If u submit this form u get a mail with a code if you put that code in to the next page you can reset your password.</p>
+<section class="login-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Reset password now</h2>
+                <form class="login-form" method="post">
+                    <div class="form-group" style="margin-top: 30%">
+                        <label for="exampleInputEmail1" class="text-uppercase">Email</label>
+                        <input type="text" class="form-control" placeholder="" name="email">
+                    </div>
+
+                    <div class="form-check" style="margin-top: 25% ">
+                        <button type="submit" class="btn btn-login float-right" name="submit">Submit</button>
+                    </div>
+
+                    <!-- description of what will happen-->
+                    <div class="copy-text">A code will be send to your email when you enter your email addres that is linked to your account.</div>
+                    <!-- link to login page -->
+                    <div class="copy-text-1">Already have an account? <a href="Login.php">Login</a></div>
+
+                </form>
             </div>
-        </div>
-    </div>
-</div>
-</form>
+            <div class="col-md-8 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="../Afbeeldingen/MEnsen.jpg" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>Type Chat</h2>
+                                    <p>Starded as a joke now a full fletched socialmedia platform.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+</section>
 
 <!-- Script -->
 

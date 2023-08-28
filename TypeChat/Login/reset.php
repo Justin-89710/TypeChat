@@ -10,23 +10,34 @@ if (!$db) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// check if user is already logged in
-if (isset($_SESSION["username"])) {
-    header("Location: home.php");
-}
-
 // change password
 if (isset($_POST['submit'])) {
     // get password
     $password = $_POST['newpassword'];
-    // hash password
-    $password = password_hash($password, PASSWORD_DEFAULT);
-    // get email
-    $email = $_SESSION['email'];
-    // update password
-    $db->exec("UPDATE Login SET password='$password' WHERE email='$email'");
-    // redirect to login page
-    header("Location: login.php");
+    // check if password is valid
+    if (strlen($password) < 8) {
+        $error = "Wachtwoord moet minimaal 8 tekens lang zijn.";
+    } elseif (!preg_match("#[0-9]+#", $password)) {
+        $error = "Wachtwoord moet minimaal 1 nummer bevatten.";
+    } elseif (!preg_match("#[A-Z]+#", $password)) {
+        $error = "Wachtwoord moet minimaal 1 hoofdletter bevatten.";
+    } elseif (!preg_match("#[a-z]+#", $password)) {
+        $error = "Wachtwoord moet minimaal 1 kleine letter bevatten.";
+    } else {
+        // check if password is the same as the confirmation password
+        if ($_POST['newpassword'] != $_POST['confirmpassword']) {
+            $error = "Wachtwoorden komen niet overeen.";
+        } else {
+            // hash password
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            // get email
+            $email = $_SESSION['email'];
+            // update password
+            $db->exec("UPDATE Login SET password='$password' WHERE email='$email'");
+            // redirect to login page
+            header("Location: ../home/home.php");
+        }
+    }
 }
 ?>
 
@@ -42,32 +53,73 @@ if (isset($_POST['submit'])) {
     <!-- CSS -->
 
     <link rel="stylesheet" href="../CSS/Login.css">
-
-    <!-- Bootstrap -->
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+    <link rel="icon" href="afbeeldingen/Logo.png">
+    <!-- Bootstrap CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<form method="post">
+
+<section class="login-block">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="login-container">
-                    <h1>Wachtwoord resetten</h1>
+        <div class="row">
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Reset password now</h2>
+                <form class="login-form" method="post">
                     <div class="form-group">
-                        <label for="code">New password</label>
-                        <input type="password" class="form-control" id="Newpassword" placeholder="Enter New Password" name="newpassword">
+                        <label for="exampleInputEmail1" class="text-uppercase">New password</label>
+                        <input type="password" class="form-control" placeholder="" name="newpassword">
                     </div>
+
                     <div class="form-group">
-                        <label for="code">Confirm password</label>
-                        <input type="password" class="form-control" id="Newpassword" placeholder="Enter New Password" name="confirmpassword">
+                        <label for="exampleInputEmail1" class="text-uppercase">Confirm password</label>
+                        <input type="password" class="form-control" placeholder="" name="confirmpassword">
                     </div>
-                    <button type="submit" class="btn btn-block" name="submit">Send mail</button>
+
+                    <!-- error message -->
+
+                    <?php if (isset($error)) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo $error; ?>
+                        </div>
+                    <?php } ?>
+
+                    <div class="form-check" style="margin-top: 25% ">
+                        <button type="submit" class="btn btn-login float-right" name="submit">Submit</button>
+                    </div>
+
+                    <!-- description of what will happen-->
+                    <div class="copy-text">put in the code that has been send to your mail.</div>
+                    <!-- link to login page -->
+                    <div class="copy-text-1">Already have an account? <a href="Login.php">Login</a></div>
+
+                </form>
+            </div>
+            <div class="col-md-8 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="../Afbeeldingen/MEnsen.jpg" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>Type Chat</h2>
+                                    <p>Starded as a joke now a full fletched socialmedia platform.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</form>
+</section>
 </body>
 </html>

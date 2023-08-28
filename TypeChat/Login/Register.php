@@ -27,7 +27,6 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $name = $_POST['name'];
     $password = $_POST['password'];
-    $profilepicid = 3;
 
     // check if email is valid
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -42,13 +41,44 @@ if (isset($_POST['submit'])) {
             $result = $db->query("SELECT * FROM Login WHERE name='$name'");
             if ($result->fetchArray()) {
                 $error = "Username is al in gebruik.";
+                //if there is an error, show it
+            } elseif (isset($error)) {
+                echo "<div class='alert alert-danger' role='alert'>" . $error . "</div>";
+            } elseif (strlen($password) < 6) {
+                $error = "Wachtwoord moet minimaal 6 tekens lang zijn.";
+            } elseif (!preg_match("#[0-9]+#", $password)) {
+                $error = "Wachtwoord moet minimaal 1 nummer bevatten.";
+            } elseif (!preg_match("#[A-Z]+#", $password)) {
+                $error = "Wachtwoord moet minimaal 1 hoofdletter bevatten.";
+            } elseif (!preg_match("#[a-z]+#", $password)) {
+                $error = "Wachtwoord moet minimaal 1 kleine letter bevatten.";
             } else {
-                // hash password
+                // if there is no error, make a new user
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                // insert user into database
-                $db->exec("INSERT INTO Login (name, email, password, profilepicid) VALUES ('$name', '$email', '$password', '$profilepicid')");
-                // redirect to login page
-                header("Location: login.php");
+                $db->exec("INSERT INTO Login (email, name, password) VALUES ('$email', '$name', '$password')");
+
+                //set profile pic to default
+                $result = $db->query("SELECT * FROM Login WHERE email='$email'");
+                $row = $result->fetchArray();
+
+                //Login the user
+                $result = $db->query("SELECT * FROM Login WHERE email='$email'");
+                $row = $result->fetchArray();
+                session_start();
+                $_SESSION["loggedin"] = true;
+                $_SESSION["id"] = $row['ID'];
+                $_SESSION["username"] = $row['name'];
+                if ($row['profile_pic'] == null) {
+                    $db->exec("UPDATE Login SET profilepic = 'default.jpg' WHERE email='$email'");
+                }
+                if ($row['bio'] == null) {
+                    $db->exec("UPDATE Login SET bio = 'Dit is mijn bio!' WHERE email='$email'");
+                }
+                if (isset($error)){
+                    echo "<div class='alert alert-danger' role='alert'>" . $error . "</div>";
+                } else {
+                    header("Location: ../home/home.php");
+                }
             }
         }
     }
@@ -73,36 +103,65 @@ if (isset($_POST['submit'])) {
 
     <link rel="stylesheet" href="../CSS/Login.css">
 
-    <!-- Bootstrap -->
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+    <!-- Bootstrap CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="login-container">
-                <h1>Register</h1>
-                <form method="POST">
+<section class="login-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Register Now</h2>
+                <form class="login-form" method="post">
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+                        <label for="exampleInputEmail1" class="text-uppercase">Email</label>
+                        <input type="text" class="form-control" placeholder="" name="email">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        <label for="exampleInputEmail1" class="text-uppercase">Name</label>
+                        <input type="text" class="form-control" placeholder="" name="name">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        <label for="exampleInputPassword1" class="text-uppercase">Password</label>
+                        <input type="password" class="form-control" placeholder="" name="password">
                     </div>
-                    <button type="submit" class="btn btn-block" name="submit">Register</button>
+
+
+                    <div class="form-check">
+                        <button type="submit" class="btn btn-login float-right" name="submit">Submit</button>
+                    </div>
+                    <!-- link to login page -->
+                    <div class="copy-text-1">Already have an account? <a href="Login.php">Login</a></div>
+
                 </form>
             </div>
-        </div>
-    </div>
-</div>
+            <div class="col-md-8 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="../Afbeeldingen/MEnsen.jpg" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>Type Chat</h2>
+                                    <p>Starded as a joke now a full fletched socialmedia platform.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+</section>
 
 <script>
 
@@ -144,11 +203,17 @@ if (isset($_POST['submit'])) {
     }
 
     document.getElementById("username").addEventListener("input", checkUsername);
-</script>
 
-<!-- Dark mode script -->
+    for (let i = 0; i < document.querySelectorAll(".form-control").length; i++) {
+        document.querySelectorAll(".form-control")[i].addEventListener("input", function() {
+            if (document.querySelectorAll(".form-control")[i].value.length > 0) {
+                document.querySelectorAll(".form-control")[i].classList.add("not-empty");
+            } else {
+                document.querySelectorAll(".form-control")[i].classList.remove("not-empty");
+            }
+        });
+    }
 
-<script>
     // Check if user's browser is in dark mode
     const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -158,6 +223,8 @@ if (isset($_POST['submit'])) {
         document.querySelector('.box').classList.add('dark-mode');
         document.querySelector('form').classList.add('dark-mode');
     }
+
+
 </script>
 </body>
 </html>

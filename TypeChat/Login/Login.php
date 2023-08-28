@@ -18,39 +18,50 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 
 }
 
-// Login script
-
-if (isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
+//login system with cookies for remember me and auto login
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $remember = $_POST['Rememberme'];
 
-        // Check if username exists
-        $stmt = $db->prepare("SELECT * FROM Login WHERE email = :email");
-        $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-        $result = $stmt->execute();
-        $row = $result->fetchArray();
+    $result = $db->query("SELECT * FROM Login WHERE email='$email'");
+    $row = $result->fetchArray();
+    $hash = $row['password'];
+    $id = $row['ID'];
 
-        if ($row) {
-            // Check if password is correct
-            if (password_verify($password, $row['password'])) {
-                // Password is correct, so start a new session
-                session_start();
+    if (password_verify($password, $hash)) {
+        $_SESSION["loggedin"] = true;
+        $_SESSION["username"] = $row['name'];
+        $_SESSION["id"] = $id;
 
-                // Store data in session variables
-                $_SESSION["loggedin"] = true;
-                $_SESSION["id"] = $row['ID'];
-                $_SESSION["username"] = $row['name'];
-
-                // Redirect user to welcome page
-                header("location: ../Account/acount.php");
-            } else {
-                // Display an error message if password is not valid
-                $error = "The password you entered was not valid.";
-            }
-        } else {
-            // Display an error message if username doesn't exist
-            $error = "No account found with that username.";
+        if ($remember == 'on') {
+            setcookie("email", $email, time() + (86400 * 30), "/");
+            setcookie("password", $password, time() + (86400 * 30), "/");
         }
+
+        header("location: ../Account/acount.php");
+    } else {
+        echo '<script>alert("Username or password is incorrect")</script>';
+    }
+}
+
+//auto login
+if (isset($_COOKIE['email']) && isset($_COOKIE['password'])) {
+    $email = $_COOKIE['email'];
+    $password = $_COOKIE['password'];
+
+    $result = $db->query("SELECT * FROM Login WHERE email='$email'");
+    $row = $result->fetchArray();
+    $hash = $row['password'];
+    $id = $row['ID'];
+
+    if (password_verify($password, $hash)) {
+        $_SESSION["loggedin"] = true;
+        $_SESSION["username"] = $row['name'];
+        $_SESSION["id"] = $id;
+
+        header("location: ../Account/acount.php");
+    }
 }
 ?>
 
@@ -66,49 +77,72 @@ if (isset($_POST['submit'])){
 
     <link rel="icon" href="../Afbeeldingen/Logo.png">
 
-    <!-- CSS -->
-
+    <!-- link to css -->
     <link rel="stylesheet" href="../CSS/Login.css">
-
     <!-- Bootstrap CSS -->
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Login</title>
 
 </head>
 
 <body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="login-container">
-                <h1>Login</h1>
-                <form method="POST">
+<section class="login-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Login Now</h2>
+                <form class="login-form" method="post">
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                        <label for="exampleInputEmail1" class="text-uppercase">Email</label>
+                        <input type="text" class="form-control" placeholder="" name="email">
+
                     </div>
-                    <?php if (isset($error)) { ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php echo $error; ?>
-                        </div>
-                    <?php } ?>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        <label for="exampleInputPassword1" class="text-uppercase">Password</label>
+                        <input type="password" class="form-control" placeholder="" name="password">
                     </div>
-                    <button type="submit" class="btn btn-block" name="submit">Login</button>
+
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="Rememberme">
+                            <small>Remember Me</small>
+                        </label>
+                        <button type="submit" class="btn btn-login float-right" name="submit">Submit</button>
+                    </div>
+                    <!-- link naar register pagina -->
+                    <div class="copy-text-2">Don't have an account yet? <a href="Register.php">Register</a></div>
+                    <!-- link naar wachtwoord vergeten pagina -->
+                    <div class="copy-text-1">Forgot your password? <a href="Wachtwoord_vergeten.php">Click here</a></div>
+
                 </form>
             </div>
+            <div class="col-md-8 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="../Afbeeldingen/MEnsen.jpg" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>Type Chat</h2>
+                                    <p>Starded as a joke now a full fletched socialmedia platform.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+</section>
 </body>
-
-<!-- Bootstrap scripts -->
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
-
 </html>
