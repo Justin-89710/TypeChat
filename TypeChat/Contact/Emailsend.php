@@ -66,7 +66,7 @@ This is an automated response, please do not reply!
 
             mail($to, $inputName, $inputMessage, $headers);
         } else {
-            include 'email.view.error.php';
+            include 'Error.php';
             $php_errormsg = "Something went wrong pleas call us at 06 123456789!";
         }
     }

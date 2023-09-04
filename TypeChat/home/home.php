@@ -118,41 +118,45 @@ if (isset($_POST['deletecomment'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="../CSS/Home.css">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- FontAwesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Icon Logo -->
     <link rel="icon" href="../Afbeeldingen/Logo.png">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="stylesheet" href="../CSS/Home.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/6d3b596002.js" crossorigin="anonymous"></script>
+    <title>Home</title>
+
 </head>
 <body>
-
 <!-- Navbar -->
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <div class="container">
+<nav class="navbar navbar-light bg-transparent navbar-expand-lg navbar-lg nav-size">
+    <div class="container size">
         <!-- Navbar Logo -->
-        <a class="navbar-brand" href="../home/home.php">
-            <img src="../Afbeeldingen/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            TypeChat
+        <a class="navbar-brand" href="../home/home.php" style="margin-right: 5em;">
+            <img src="../Afbeeldingen/nav-logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            <p class="navbar-brand" style="float: right; margin-top: 3%;">TypeChat</p>
         </a>
 
         <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Navbar Items -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse bg-transparent  collapse-color" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="../home/home.php">Home</a>
+                    <a class="nav-link" style="text-decoration: underline; text-decoration-color: #17a2b8; text-decoration-thickness: 3px;" href="../home/home.php">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../post/post.php">Post</a>
@@ -164,8 +168,8 @@ if (isset($_POST['deletecomment'])) {
 
             <!-- Search Form -->
             <form method="post" class="d-flex">
-                <input type="text" class="form-control me-2" name="searchinput" placeholder="Search">
-                <button type="submit" class="btn btn-primary" name="searchbutton">Search</button>
+                <input type="text" class="form-control me-2 color" name="searchinput" placeholder="Search">
+                <button type="submit" class="btn color" name="searchbutton">Search</button>
             </form>
 
             <!-- Search Results -->
@@ -180,8 +184,8 @@ if (isset($_POST['deletecomment'])) {
                             ?>
                             <div class="profile-item">
                                 <a href="../Profile/profile.php?id=<?php echo $searchid ?>" class="profile-name">
-                                <img src="../Afbeeldingen/<?php echo $searchprofilepic ?>" alt="Profile Picture" class="profile-picture">
-                                <?php echo $searchname ?></a>
+                                    <img src="../Afbeeldingen/<?php echo $searchprofilepic ?>" alt="Profile Picture" class="profile-picture">
+                                    <?php echo $searchname ?></a>
                             </div>
                             <?php
                         }
@@ -262,9 +266,9 @@ if (isset($_POST['deletecomment'])) {
                         $alreadyLiked = ($checklikeresult === 1);
 
                         if ($alreadyLiked) {
-                            echo '<button type="submit" class="btn btn-danger" name="likebutton">Unlike ' . $likes . '</button>';
+                            echo '<button type="submit" class="btn btn-outline-danger" name="likebutton">Unlike ' . $likes . '</button>';
                         } else {
-                            echo '<button type="submit" class="btn btn-primary" name="likebutton">Like ' . $likes . '</button>';
+                            echo '<button type="submit" class="btn color" name="likebutton">Like ' . $likes . '</button>';
                         }
                         ?>
                     </form>
@@ -292,7 +296,7 @@ if (isset($_POST['deletecomment'])) {
                                     <form method="post" style="float: right;">
                                         <input type="hidden" name="commentid" value="<?php echo $commentrow['ID'] ?>">
                                         <!-- trash icon -->
-                                        <button type="submit" name="deletecomment" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="submit" name="deletecomment" class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
                                     </form>
                                     <?php
                                 }
@@ -311,7 +315,7 @@ if (isset($_POST['deletecomment'])) {
                         }
                         ?>
                         <input type="text" name="commentinput" class="comment-input" placeholder="Add a comment...">
-                        <button type="submit" name="commentbutton" class="comment-button">Comment</button>
+                        <button type="submit" name="commentbutton" class="btn color">Comment</button>
                     </form>
                 </div>
             </div>

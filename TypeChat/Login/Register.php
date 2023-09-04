@@ -220,7 +220,7 @@ if (isset($_POST['submit'])) {
     // If user's browser is in dark mode, set the page to dark mode
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
-        document.querySelector('.box').classList.add('dark-mode');
+        document.querySelector('.container').classList.add('dark-mode');
         document.querySelector('form').classList.add('dark-mode');
     }
 

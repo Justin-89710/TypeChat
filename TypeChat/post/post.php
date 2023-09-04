@@ -40,6 +40,8 @@ if (isset($_POST['submit'])) {
     $image_tmp = $_FILES['image']['tmp_name'];
     $video = $_FILES['video']['name'];
     $video_tmp = $_FILES['video']['tmp_name'];
+    //set max file size
+    $maxsize = 5242880; // 5MB
     $sql = $db->query("SELECT * FROM Login WHERE name = '" . $_SESSION['username'] . "'");
     $row = $sql->fetchArray();
     $id = $row['ID'];
@@ -47,11 +49,21 @@ if (isset($_POST['submit'])) {
 
     //check if the image is not empty
     if (!empty($image)) {
+        //check if the image is not to big
+        if ($_FILES['image']['size'] > $maxsize) {
+            echo "File is too large. Max file size is 5MB.";
+            exit;
+        }
         //upload the image to the server
         move_uploaded_file($image_tmp, "../Afbeeldingen/$image");
         //insert the data into the database
         $db->exec("INSERT INTO Post (title, content, image, user_id, Likes) VALUES ('$title', '$content', '$image', '$id', '$like')");
     } elseif (!empty($video)) {
+        //check if the video is not to big
+        if ($_FILES['video']['size'] > $maxsize) {
+            echo "File is too large. Max file size is 5MB.";
+            exit;
+        }
         //upload the video to the server
         move_uploaded_file($video_tmp, "../Videos/$video");
         //insert the data into the database
@@ -64,6 +76,7 @@ if (isset($_POST['submit'])) {
 
 ?>
 
+<!-- HTML -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -71,167 +84,54 @@ if (isset($_POST['submit'])) {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-    <!-- custom css -->
-    <style>
-        .profile-picture {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+    <!-- Icon Logo -->
+    <link rel="icon" href="../Afbeeldingen/Logo.png">
 
-        .navbar {
-            background-color: #343a40;
-        }
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .navbar-brand {
-            color: #fff;
-            font-weight: bold;
-        }
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="stylesheet" href="../CSS/Home.css">
 
-        .nav-link {
-            color: #fff;
-        }
-
-        .nav-link:hover {
-            color: #e9ecef;
-        }
-
-        .profile-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .profile-item {
-            display: flex;
-            align-items: center;
-            margin: 10px;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: #fff;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .dropdown-menu {
-            background-color: #343a40;
-            border: none;
-        }
-
-        .dropdown-item {
-            color: #fff;
-        }
-
-        .dropdown-item:hover {
-            background-color: #343a40;
-            color: #e9ecef;
-        }
-
-        .profile-picture {
-            width: 30px;
-            height: 30px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
-        .dropdown-toggle::after {
-            display: none;
-        }
-
-        .dropdown-menu-end {
-            right: 0;
-            left: auto;
-        }
-
-        .dropdown-menu-end::before {
-            content: "";
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid #343a40;
-            position: absolute;
-            top: -10px;
-            right: 10px;
-        }
-
-        @media (min-width: 768px) {
-            .navbar-collapse {
-                justify-content: flex-end;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .navbar-nav {
-                flex-direction: column;
-            }
-
-            .navbar-toggler {
-                margin-left: auto;
-            }
-
-            .search-form {
-                flex: 1;
-            }
-
-            .search-button {
-                margin-top: 10px;
-                width: 100%;
-            }
-
-            .search-results {
-                width: 100%;
-                left: auto;
-                right: auto;
-                border-radius: 5px;
-            }
-        }
-    </style>
-    <title>Post</title>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/6d3b596002.js" crossorigin="anonymous"></script>
+    <title>Home</title>
 </head>
 <body>
-
 <!-- Navbar -->
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <div class="container">
+<nav class="navbar navbar-light bg-transparent navbar-expand-lg navbar-lg nav-size">
+    <div class="container size">
         <!-- Navbar Logo -->
-        <a class="navbar-brand" href="../home/home.php">
-            <img src="../Afbeeldingen/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            TypeChat
+        <a class="navbar-brand" href="../home/home.php" style="margin-right: 5em;">
+            <img src="../Afbeeldingen/nav-logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            <p class="navbar-brand" style="float: right; margin-top: 3%;">TypeChat</p>
         </a>
 
         <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Navbar Items -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse bg-transparent  collapse-color" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="../home/home.php">Home</a>
+                    <a class="nav-link home" href="../home/home.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../post/post.php">Post</a>
+                    <a class="nav-link" style="text-decoration: underline; text-decoration-color: #17a2b8; text-decoration-thickness: 3px;" href="../post/post.php">Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link contact" href="../Contact/Contact.php">Contact</a>
                 </li>
             </ul>
 
             <!-- Search Form -->
             <form method="post" class="d-flex">
-                <input type="text" class="form-control me-2" name="searchinput" placeholder="Search">
-                <button type="submit" class="btn btn-primary" name="searchbutton">Search</button>
+                <input type="text" class="form-control me-2 color" name="searchinput" placeholder="Search">
+                <button type="submit" class="btn color" name="searchbutton">Search</button>
             </form>
 
             <!-- Search Results -->
@@ -275,27 +175,34 @@ if (isset($_POST['submit'])) {
 
 
 
-
-<form method="post" enctype="multipart/form-data" style="margin-top: 3em">
+<form method="post" enctype="multipart/form-data" style="margin-top: 3em" class="margin">
     <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" name="title" id="title" required>
+        <input type="text" class="form-control color" name="title" id="title" required>
     </div>
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea class="form-control" name="content" id="content" cols="30" rows="10" required></textarea>
+        <textarea class="form-control color" name="content" id="content" cols="30" rows="10" required></textarea>
     </div>
     <div class="form-group">
-        <label for="image">Image <em>(optional)</em></label>
-        <input type="file" class="form-control-file" name="image" id="image">
+        <label for="image" class="col-form-label">Upload Image <em>(optional)</em></label>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input form-control-file" name="image" id="image">
+            <label class="custom-file-label btn color" for="image">Choose file</label>
+        </div>
+        <small class="form-text text-muted">Select an image file to upload.</small>
     </div>
     <!-- add video -->
     <div class="form-group">
-        <label for="video">Video <em>(optional)</em></label>
-        <input type="file" class="form-control-file" name="video" id="video">
+        <label for="image" class="col-form-label">Upload Video <em>(optional)</em></label>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input form-control-file" name="video" id="video">
+            <label class="custom-file-label btn color" for="image">Choose file</label>
+        </div>
+        <small class="form-text text-muted">Select an Video file to upload.</small>
     </div>
     <p><em>You can only upload a video or a image not both.</em></p>
-    <button type="submit" class="btn btn-primary" name="submit">Post</button>
+    <button type="submit" class="btn color" name="submit">Post</button>
 </form>
 
 <!-- Include Bootstrap JS files -->

@@ -48,57 +48,23 @@ if (isset($_POST['searchbutton'])) {
     <!-- Icon Logo -->
     <link rel="icon" href="../Afbeeldingen/Logo.png">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="../CSS/Acount.css">
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/nav.css">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/6d3b596002.js" crossorigin="anonymous"></script>
 
     <style>
-        body{
-            background: linear-gradient(to top, #C4F5FC, whitesmoke);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        .profile-picture {
-            width: 30px;
-            height: 30px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-        .nav-size {
-            font-size: 15px;
-            padding: 0;
-            height: 100px;
-        }
-        @media screen and (max-width: 600px) {
-            .nav-size {
-                font-size: 15px;
-                padding: 0;
-                height: auto;
-            }
-        }
-
-        }
-        .size {
-            max-width: 100%;
-        }
-        .color{
-            background-color: transparent;
-            border: #138496 1px solid;
-            color: #138496;
-        }
     </style>
 </head>
 
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-light bg-light navbar-expand-lg navbar-lg nav-size">
+<nav class="navbar navbar-light bg-transparent navbar-expand-lg navbar-lg nav-size">
     <div class="container size">
         <!-- Navbar Logo -->
         <a class="navbar-brand" href="../home/home.php" style="margin-right: 5em;">
@@ -107,12 +73,12 @@ if (isset($_POST['searchbutton'])) {
         </a>
 
         <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Navbar Items -->
-        <div class="collapse navbar-collapse bg-light  collapse-color" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse bg-transparent  collapse-color" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="../home/home.php">Home</a>
@@ -197,7 +163,7 @@ if (isset($_POST['searchbutton'])) {
             </div>
 
             <div class="text-center">
-                <a href="editaccount.php" class="btn btn-primary">Edit Account</a>
+                <a href="editaccount.php" class="btn color">Edit Account</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,86 @@
+body{
+    background: linear-gradient(to top, #C4F5FC, whitesmoke);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.profile-picture {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.nav-size {
+    font-size: 15px;
+    padding: 0;
+    height: 100px;
+    background: transparent;
+}
+@media screen and (max-width: 600px) {
+    .nav-size {
+        font-size: 15px;
+        padding: 0;
+        height: auto;
+    }
+}
+.size {
+    max-width: 100%;
+}
+.color{
+    background-color: transparent;
+    border: #138496 1px solid;
+    color: #138496;
+}
+.prifil{
+    /*circle*/
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: 2s ease-in-out;
+}
+
+.prifil img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.prifil :hover{
+    /*somthing cool*/
+    transform: scale(1.1);
+    transition: all 0.5s ease-in-out;
+}
+
+.toggle{
+    border: #17a2b8 1px solid;
+    color: #17a2b8;
+    background-color: transparent;
+    transition: 0.5s;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.custom-file-input{
+    display: none;
+}
+
+.margin{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%; /* Adjust this value to position it below the navigation bar */
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Add background color or styling as needed */
+    z-index: 100; /* Ensure it's above other content */
+    color: white;
+}
