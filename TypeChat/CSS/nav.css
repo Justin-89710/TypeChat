@@ -77,10 +77,14 @@ body{
 
 .search-results {
     position: absolute;
-    top: 100%; /* Adjust this value to position it below the navigation bar */
+    top: 100%;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.8); /* Add background color or styling as needed */
-    z-index: 100; /* Ensure it's above other content */
-    color: white;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-results.active {
+    display: block;
 }

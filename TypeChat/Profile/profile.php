@@ -38,153 +38,37 @@ if (isset($_POST['searchbutton'])) {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="stylesheet" href="../CSS/Home.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/6d3b596002.js" crossorigin="anonymous"></script>
     <title>Profile</title>
-    <!-- stylesheets -->
-    <style>
-        .profile-picture {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .navbar {
-            background-color: #343a40;
-        }
-
-        .navbar-brand {
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .nav-link {
-            color: #fff;
-        }
-
-        .nav-link:hover {
-            color: #e9ecef;
-        }
-
-        .profile-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .profile-item {
-            display: flex;
-            align-items: center;
-            margin: 10px;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: #fff;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .dropdown-menu {
-            background-color: #343a40;
-            border: none;
-        }
-
-        .dropdown-item {
-            color: #fff;
-        }
-
-        .dropdown-item:hover {
-            background-color: #343a40;
-            color: #e9ecef;
-        }
-
-        .profile-picture {
-            width: 30px;
-            height: 30px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
-        .dropdown-toggle::after {
-            display: none;
-        }
-
-        .dropdown-menu-end {
-            right: 0;
-            left: auto;
-        }
-
-        .dropdown-menu-end::before {
-            content: "";
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid #343a40;
-            position: absolute;
-            top: -10px;
-            right: 10px;
-        }
-
-        @media (min-width: 768px) {
-            .navbar-collapse {
-                justify-content: flex-end;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .navbar-nav {
-                flex-direction: column;
-            }
-
-            .navbar-toggler {
-                margin-left: auto;
-            }
-
-            .search-form {
-                flex: 1;
-            }
-
-            .search-button {
-                margin-top: 10px;
-                width: 100%;
-            }
-
-            .search-results {
-                width: 100%;
-                left: auto;
-                right: auto;
-                border-radius: 5px;
-            }
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/nav.css">
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <div class="container">
+<nav class="navbar navbar-light bg-transparent navbar-expand-lg navbar-lg nav-size">
+    <div class="container size">
         <!-- Navbar Logo -->
-        <a class="navbar-brand" href="../home/home.php">
-            <img src="../Afbeeldingen/Logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            TypeChat
+        <a class="navbar-brand" href="../home/home.php" style="margin-right: 5em;">
+            <img src="../Afbeeldingen/nav-logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            <p class="navbar-brand" style="float: right; margin-top: 3%;">TypeChat</p>
         </a>
 
         <!-- Navbar Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Navbar Items -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse bg-transparent  collapse-color" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="../home/home.php">Home</a>
@@ -192,12 +76,15 @@ if (isset($_POST['searchbutton'])) {
                 <li class="nav-item">
                     <a class="nav-link" href="../post/post.php">Post</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="text-decoration: underline; text-decoration-color: #17a2b8; text-decoration-thickness: 3px;" href="../Contact/Contact.php">Contact</a>
+                </li>
             </ul>
 
             <!-- Search Form -->
             <form method="post" class="d-flex">
-                <input type="text" class="form-control me-2" name="searchinput" placeholder="Search">
-                <button type="submit" class="btn btn-primary" name="searchbutton">Search</button>
+                <input type="text" class="form-control me-2 color" name="searchinput" placeholder="Search">
+                <button type="submit" class="btn color" name="searchbutton">Search</button>
             </form>
 
             <!-- Search Results -->
@@ -239,6 +126,7 @@ if (isset($_POST['searchbutton'])) {
     </div>
 </nav>
 
+
 <!-- profile of person with the same id as the link -->
 <?php
 // Get the id from the link
@@ -253,7 +141,9 @@ $row = $result->fetchArray();
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
             <h1 class="profile-name"><?php echo $row['name']; ?></h1>
-            <img src="../Afbeeldingen/<?php echo $row['profilepic']; ?>" alt="Profile picture" class="profile-picture img-fluid">
+            <img src="../Afbeeldingen/<?php echo $row['profilepic']; ?>" alt="Profile picture" class="profile-picture img-fluid"  style="width: 20rem; height: 20rem">
+            <br><br>
+            <p class="bio-header" style="font-weight: bold; font-size: 1.5em;">Bio</p>
             <p class="profile-bio"><?php echo $row['bio']; ?></p>
         </div>
     </div>

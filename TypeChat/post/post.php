@@ -187,7 +187,7 @@ if (isset($_POST['submit'])) {
     <div class="form-group">
         <label for="image" class="col-form-label">Upload Image <em>(optional)</em></label>
         <div class="custom-file">
-            <input type="file" class="custom-file-input form-control-file" name="image" id="image">
+            <input type="file" class="custom-file-input form-control-file" name="image" id="image" accept="image/*">
             <label class="custom-file-label btn color" for="image">Choose file</label>
         </div>
         <small class="form-text text-muted">Select an image file to upload.</small>
@@ -196,7 +196,7 @@ if (isset($_POST['submit'])) {
     <div class="form-group">
         <label for="image" class="col-form-label">Upload Video <em>(optional)</em></label>
         <div class="custom-file">
-            <input type="file" class="custom-file-input form-control-file" name="video" id="video">
+            <input type="file" class="custom-file-input form-control-file" name="video" id="video" accept="video/*">
             <label class="custom-file-label btn color" for="image">Choose file</label>
         </div>
         <small class="form-text text-muted">Select an Video file to upload.</small>
