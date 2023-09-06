@@ -83,11 +83,19 @@ if (isset($_POST['submit2']) && !empty($_POST['name'])) {
 }
 // change email in database
 if (isset($_POST['submit3']) && !empty($_POST['email'])) {
-    $email = $_POST['email'];
-    $db->exec("UPDATE Login SET email = '$email' WHERE name = '" . $_SESSION['username'] . "'");
-    header("Location: acount.php");
-} else if (isset($_POST['submit3']) && empty($_POST['email'])) {
-    $error3 = "Vul een email in.";
+    // genarate 4 diget code
+    $code = rand(1000, 9999);
+    // send email
+    $to = $_POST['email'];
+    $subject = "Type Chat - Verifieer je email";
+    $message = "Je code is: " . $code;
+    $headers = "From:
+    Type Chat";
+    mail($to, $subject, $message, $headers);
+    // save data in session
+    $_SESSION['newemail'] = $_POST['email'];
+    $_SESSION['newcode'] = $code;
+    header("Location: Verefymail.php");
 }
 
 // change bio in database
